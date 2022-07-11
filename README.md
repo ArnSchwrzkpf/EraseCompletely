@@ -1,2 +1,2 @@
 # EraseCompletely
-Completely erase the file by overwriting it some times. This program is written in Python.
+Completely erase files by overwriting some times. This program is written in Python.
