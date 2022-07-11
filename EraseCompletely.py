@@ -1,4 +1,4 @@
-# PerfectErase PY
+# EraseCompletely
 import os
 import sys
 import random
