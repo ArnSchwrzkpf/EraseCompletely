@@ -3,21 +3,31 @@ import os
 import sys
 import secrets
 
-def overWriteSpecific(filePath, data):
+CHUNK_SIZE = 1024 * 1024  # 1MB単位で処理
+
+def overWriteSpecific(filePath, byteVal):
+    """ファイル全体を指定のバイトで上書き"""
     contentLength = os.path.getsize(filePath)
+    pattern = byteVal * CHUNK_SIZE
     with open(filePath, "r+b") as f:
-        for _ in range(contentLength):
-            f.write(data)
+        written = 0
+        while written < contentLength:
+            to_write = min(CHUNK_SIZE, contentLength - written)
+            f.write(pattern[:to_write])
+            written += to_write
         f.flush()
 
 def overWriteRandom(filePath, passes=1):
-    """指定回数ランダムデータで上書き"""
+    """ファイル全体をランダムデータで指定回数上書き"""
     contentLength = os.path.getsize(filePath)
-    for _ in range(passes):
-        with open(filePath, "r+b") as f:
-            for _ in range(contentLength):
-                data = secrets.randbelow(256).to_bytes(1, 'little')
-                f.write(data)
+    with open(filePath, "r+b") as f:
+        for _ in range(passes):
+            f.seek(0)
+            written = 0
+            while written < contentLength:
+                to_write = min(CHUNK_SIZE, contentLength - written)
+                f.write(secrets.token_bytes(to_write))
+                written += to_write
             f.flush()
 
 def eraseCompletely(filePath, random_passes=3):
