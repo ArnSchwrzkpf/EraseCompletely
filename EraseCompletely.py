@@ -1,7 +1,7 @@
 # EraseCompletely
 import os
 import sys
-import random
+import secrets
 def overWriteSpecific(filePath, data):
     contentLength = os.path.getsize(filePath)
     with open(filePath, "r+b") as f:
@@ -12,7 +12,7 @@ def overWriteRandom(filePath):
     contentLength = os.path.getsize(filePath)
     with open(filePath, "r+b") as f:
         for i in range(contentLength):
-            data = random.randrange(256).to_bytes(1, 'little')
+            data = secrets.randbelow(256).to_bytes(1, 'little')
             f.write(data)
         f.flush()
 if __name__ == '__main__':
